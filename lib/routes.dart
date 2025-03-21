@@ -7,7 +7,6 @@ import 'package:flatten/views/apps/ecommerce/products.dart';
 import 'package:flatten/views/auth/locked.dart';
 import 'package:flatten/views/auth/login.dart';
 
-import 'package:flatten/views/crm_dashboard_screen.dart';
 import 'package:flatten/views/dashboard.dart';
 
 
@@ -43,10 +42,6 @@ getPageRoute() {
     GetPage(
         name: '/dashboard',
         page: () => DashboardPage(),
-        middlewares: [AuthMiddleware()]),
-    GetPage(
-        name: '/crm/dashboard',
-        page: () => CrmDashboardScreen(),
         middlewares: [AuthMiddleware()]),
    
     GetPage(name: '/auth/login', page: () => LoginPage()),

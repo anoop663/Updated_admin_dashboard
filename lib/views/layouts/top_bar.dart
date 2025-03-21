@@ -1,4 +1,3 @@
-import 'package:flatten/helpers/extensions/string.dart';
 
 import 'package:flatten/helpers/theme/app_style.dart';
 import 'package:flatten/helpers/theme/theme_customizer.dart';
@@ -9,7 +8,6 @@ import 'package:flatten/helpers/widgets/my_card.dart';
 import 'package:flatten/helpers/widgets/my_container.dart';
 import 'package:flatten/helpers/widgets/my_spacing.dart';
 import 'package:flatten/helpers/widgets/my_text.dart';
-import 'package:flatten/helpers/widgets/my_text_style.dart';
 import 'package:flatten/images.dart';
 import 'package:flatten/widgets/custom_pop_menu.dart';
 import 'package:flutter/material.dart';
