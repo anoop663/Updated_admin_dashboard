@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flatten/controllers/ui/notifications_controller.dart';
 import 'package:flatten/helpers/extensions/string.dart';
 import 'package:flatten/helpers/theme/admin_theme.dart';

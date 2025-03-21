@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flatten/controllers/apps/ecommerce/edit_products_controller.dart';
 import 'package:flatten/helpers/extensions/string.dart';
 import 'package:flatten/helpers/theme/app_style.dart';

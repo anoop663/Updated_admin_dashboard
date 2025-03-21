@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flatten/app_constant.dart';
 import 'package:flatten/controllers/forms/basic_controller.dart';
 import 'package:flatten/helpers/extensions/date_time_extension.dart';

@@ -1,10 +1,8 @@
 import 'package:flatten/helpers/extensions/string.dart';
-import 'package:flatten/helpers/theme/app_style.dart';
 import 'package:flatten/helpers/theme/theme_customizer.dart';
 import 'package:flatten/helpers/services/url_service.dart';
 import 'package:flatten/helpers/utils/mixins/ui_mixin.dart';
 import 'package:flatten/helpers/utils/my_shadow.dart';
-import 'package:flatten/helpers/widgets/my_button.dart';
 import 'package:flatten/helpers/widgets/my_card.dart';
 import 'package:flatten/helpers/widgets/my_container.dart';
 import 'package:flatten/helpers/widgets/my_spacing.dart';

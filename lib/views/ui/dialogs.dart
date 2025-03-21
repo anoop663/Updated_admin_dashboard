@@ -1,4 +1,5 @@
-// TODO: === Add Auth dialogs
+
+// ignore_for_file: deprecated_member_use
 
 import 'package:flatten/controllers/ui/dialogs_controller.dart';
 

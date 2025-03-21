@@ -5,6 +5,7 @@ class MyText extends StatelessWidget {
   //Key
 
   @override
+  // ignore: overridden_fields
   final Key? key;
 
   final String text;
