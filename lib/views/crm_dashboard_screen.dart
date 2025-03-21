@@ -65,19 +65,6 @@ class _CrmDashboardScreenState extends State<CrmDashboardScreen>
                 ),
               ),
               MySpacing.height(flexSpacing),
-              Padding(
-                padding: MySpacing.x(flexSpacing / 2),
-                child: MyFlex(
-                  wrapAlignment: WrapAlignment.start,
-                  wrapCrossAlignment: WrapCrossAlignment.start,
-                  children: [
-                    MyFlexItem(child: stateCard()),
-                    revenueChart(),
-                    sourceChart(),
-                    MyFlexItem(child: recentOrder()),
-                  ],
-                ),
-              ),
             ],
           );
         },
@@ -267,101 +254,7 @@ class _CrmDashboardScreenState extends State<CrmDashboardScreen>
               ],
             ),
             MySpacing.height(20),
-            buildDefaultColumnChart()
-          ],
-        ),
-      ),
-    );
-  }
-
-  MyFlexItem sourceChart() {
-    return MyFlexItem(
-        sizes: 'lg-4 md-4',
-        child: MyContainer(
-          padding: MySpacing.only(left: 22, top: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyText.titleMedium("Lead Source", fontWeight: 600),
-              MySpacing.height(20),
-              SizedBox(height: 354, child: leadSourceChart()),
-            ],
-          ),
-        ));
-  }
-
-  SfCircularChart leadSourceChart() {
-    return SfCircularChart(
-      series: controller.getSourceChart(),
-    );
-  }
-
-  SfCartesianChart buildDefaultColumnChart() {
-    return SfCartesianChart(
-        plotAreaBorderWidth: 0,
-        primaryXAxis: CategoryAxis(majorGridLines: MajorGridLines(width: 0)),
-        primaryYAxis: NumericAxis(
-            axisLine: AxisLine(width: 0),
-            labelFormat: '{value}',
-            majorTickLines: MajorTickLines(size: 0)),
-        series: controller.getDefaultColumnSeries(),
-        tooltipBehavior: controller.tooltipBehavior);
-  }
-
-  MyFlex stateCard() {
-    return MyFlex(
-      contentPadding: false,
-      children: [
-        stateCardDetail(LucideIcons.clipboard, contentTheme.warning,
-            "Daily Task", "150", "Task of daily", "+2.67%"),
-        stateCardDetail(LucideIcons.user_plus, contentTheme.primary,
-            "New Contact", "50", "New Added", "+2.90%"),
-        stateCardDetail(LucideIcons.wallet, contentTheme.success, "Revenue",
-            "\$36.55k", "Total Revenue", "+3.36%"),
-        stateCardDetail(LucideIcons.handshake, contentTheme.info, "Total Deal",
-            "194", "Monthly Deal", "-0.05%",
-            dailyCountColor: contentTheme.danger),
-      ],
-    );
-  }
-
-  MyFlexItem stateCardDetail(IconData icon, Color color, String title, subTitle,
-      description, dailyCount,
-      {Color? dailyCountColor}) {
-    return MyFlexItem(
-      sizes: 'lg-3 md-6 sm-6',
-      child: MyContainer(
-        height: 170,
-        paddingAll: 24,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                MyContainer(
-                    paddingAll: 12,
-                    color: color.withAlpha(39),
-                    child: Icon(icon, color: color, size: 16)),
-                MySpacing.width(12),
-                MyText.titleMedium(title, fontWeight: 600),
-              ],
-            ),
-            MyText.titleLarge(subTitle, fontWeight: 700),
-            Row(
-              children: [
-                MyText.bodyMedium(description, fontWeight: 600),
-                Spacer(),
-                MyContainer(
-                    paddingAll: 8,
-                    color: dailyCountColor != null
-                        ? dailyCountColor.withAlpha(36)
-                        : contentTheme.success.withAlpha(36),
-                    child: MyText.bodySmall(dailyCount,
-                        fontWeight: 700,
-                        color: dailyCountColor ?? contentTheme.success)),
-              ],
-            )
+          
           ],
         ),
       ),

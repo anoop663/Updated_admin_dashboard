@@ -16,7 +16,6 @@ import 'package:flatten/views/ui/cards.dart';
 import 'package:flatten/views/ui/carousels.dart';
 import 'package:flatten/views/ui/dialogs.dart';
 
-import 'package:flatten/views/ui/drag_drop.dart';
 
 import 'package:flatten/views/apps/ecommerce/invoice_page.dart';
 
@@ -105,14 +104,6 @@ getPageRoute() {
         name: '/ui/carousels',
         page: () => CarouselsPage(),
         middlewares: [AuthMiddleware()]),
-    GetPage(
-        name: '/ui/drag_drop',
-        page: () => DragDropPage(),
-        middlewares: [AuthMiddleware()]),
-
-    ///========== Forms =================///
-
-   
   
     
   ];
