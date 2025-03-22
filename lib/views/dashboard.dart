@@ -84,12 +84,12 @@ class DashboardPageState extends State<DashboardPage>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   MyText.headlineSmall(
-                                    "\$12,000",
+                                    "${controller.totalUsers}",
                                     fontWeight: 600,
                                   ),
                                   MySpacing.height(4),
                                   MyText.bodySmall(
-                                    "total_revenue".tr().capitalizeWords,
+                                    "Total Users:".tr().capitalizeWords,
                                     muted: true,
                                     fontWeight: 600,
                                   ),
@@ -119,12 +119,12 @@ class DashboardPageState extends State<DashboardPage>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   MyText.headlineSmall(
-                                    "127",
+                                    "${controller.totalOrders}",
                                     fontWeight: 600,
                                   ),
                                   MySpacing.height(4),
                                   MyText.bodySmall(
-                                    "today_sales".tr().capitalizeWords,
+                                    "Total Orders:".tr().capitalizeWords,
                                     muted: true,
                                     fontWeight: 600,
                                   ),
@@ -154,12 +154,12 @@ class DashboardPageState extends State<DashboardPage>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   MyText.headlineSmall(
-                                    "248",
+                                    "${controller.totalProducts}",
                                     fontWeight: 600,
                                   ),
                                   MySpacing.height(4),
                                   MyText.bodySmall(
-                                    "on_delivery".tr().capitalizeWords,
+                                    "Total Products:".tr().capitalizeWords,
                                     muted: true,
                                     fontWeight: 600,
                                   ),
@@ -175,41 +175,7 @@ class DashboardPageState extends State<DashboardPage>
                             ],
                           )),
                     ),
-                    MyFlexItem(
-                      sizes: "xl-3 lg-6 sm-6 md-6",
-                      child: MyCard(
-                          shadow: MyShadow(
-                              elevation: 0.5,
-                              position: MyShadowPosition.bottom),
-                          padding: MySpacing.xy(20, 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MyText.headlineSmall(
-                                    "125k",
-                                    fontWeight: 600,
-                                  ),
-                                  MySpacing.height(4),
-                                  MyText.bodySmall(
-                                    "website_visits".tr().capitalizeWords,
-                                    muted: true,
-                                    fontWeight: 600,
-                                  ),
-                                ],
-                              ),
-                              MyContainer(
-                                  color: contentTheme.danger.withAlpha(48),
-                                  child: Icon(
-                                    LucideIcons.eye,
-                                    color: contentTheme.danger,
-                                    size: 26,
-                                  ))
-                            ],
-                          )),
-                    ),
+
                   ],
                 ),
               ),

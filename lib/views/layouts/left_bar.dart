@@ -127,18 +127,9 @@ class _LeftBarState extends State<LeftBar>
                       MenuItem(
                         title: "add_cateogry".tr(),
                         isCondensed: isCondensed,
-                        route: '/apps/ecommerce/add_product',
+                        route: '/apps/ecommerce/add_category',
                       ),
-                      MenuItem(
-                        title: "product_detail".tr(),
-                        isCondensed: isCondensed,
-                        route: '/apps/ecommerce/product-detail',
-                      ),
-                      MenuItem(
-                        title: "orders".tr(),
-                        isCondensed: isCondensed,
-                        route: '/apps/ecommerce/invoice',
-                      ),
+
                     ],
                   ),
                   MenuWidget(

@@ -1,3 +1,4 @@
+import 'package:flatten/data/api_provider.dart';
 import 'package:flatten/helpers/services/auth_service.dart';
 import 'package:flatten/helpers/services/localizations/language.dart';
 import 'package:flatten/helpers/theme/theme_customizer.dart';
@@ -46,5 +47,34 @@ class LocalStorage {
 
   static Future<bool> removeLoggedInUser() async {
     return preferences.remove(_loggedInUserKey);
+  }
+
+  Future<void> storeLoginDetails(String? token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token ?? '');
+  }
+
+  // Store first time flag
+  Future<void> storeFirstTime(int? i) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('firstTime', i ?? 0);
+  }
+
+  // Read first time flag
+  Future<int?> readFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('firstTime');
+  }
+
+  // Read login details (only token)
+  Future<String?> readLoginDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  // Clear stored data
+  Future<void> clearStored() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 }

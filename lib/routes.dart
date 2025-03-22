@@ -1,6 +1,7 @@
+import 'package:flatten/data/api_provider.dart';
 import 'package:flatten/helpers/services/auth_service.dart';
 
-import 'package:flatten/views/apps/ecommerce/add_product.dart';
+import 'package:flatten/views/apps/ecommerce/add_category.dart';
 import 'package:flatten/views/apps/ecommerce/customers.dart';
 import 'package:flatten/views/apps/ecommerce/products.dart';
 
@@ -57,8 +58,8 @@ getPageRoute() {
         page: () => EcommerceProductsPage(),
         middlewares: [AuthMiddleware()]),
     GetPage(
-        name: '/apps/ecommerce/add_product',
-        page: () => AddProductPage(),
+        name: '/apps/ecommerce/add_category',
+        page: () => AddCategoryPage(),
         middlewares: [AuthMiddleware()]),
     GetPage(
         name: '/apps/ecommerce/customers',

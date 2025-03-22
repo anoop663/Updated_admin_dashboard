@@ -57,7 +57,10 @@ dependencies:
   flutter_lucide: ^1.4.0
   fl_chart: ^0.69.0
   flutter_svg: ^2.0.10+1
-  flutter_quill: ^10.5.13
+  dio:
+  image_picker: ^1.1.2
+  permission_handler: ^11.4.0
+  path_provider:
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:flatten/controllers/apps/ecommerce/edit_products_controller.dart';
 import 'package:flatten/controllers/apps/ecommerce/products_controller.dart';
 import 'package:flatten/helpers/extensions/string.dart';
 import 'package:flatten/helpers/theme/app_style.dart';
@@ -18,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
+import 'package:provider/provider.dart';
 
 class EcommerceProductsPage extends StatefulWidget {
   const EcommerceProductsPage({super.key});
@@ -38,6 +40,7 @@ class _EcommerceProductsPageState extends State<EcommerceProductsPage>
 
   @override
   Widget build(BuildContext context) {
+    AddProductsController ctrl = Get.put(AddProductsController());
     return Layout(
         child: GetBuilder<EcommerceProductsController>(
             init: controller,
@@ -51,7 +54,7 @@ class _EcommerceProductsPageState extends State<EcommerceProductsPage>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MyText.titleMedium(
-                          "products".tr(),
+                          'Category',
                           fontSize: 18,
                           fontWeight: 600,
                         ),
@@ -96,12 +99,13 @@ class _EcommerceProductsPageState extends State<EcommerceProductsPage>
                             ),
                           ),
                           MySpacing.height(16),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: MyContainer.none(
-                              borderRadiusAll: 4,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: DataTable(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MyContainer.none(
+                                borderRadiusAll: 4,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: DataTable(
                                   sortAscending: true,
                                   onSelectAll: (_) => {},
                                   headingRowColor: WidgetStatePropertyAll(
@@ -122,149 +126,161 @@ class _EcommerceProductsPageState extends State<EcommerceProductsPage>
                                     )),
                                     DataColumn(
                                         label: MyText.labelLarge(
-                                      'price'.tr(),
+                                      'Edit'.tr(),
                                       color: contentTheme.primary,
                                     )),
                                     DataColumn(
-                                        label: MyText.labelLarge(
-                                      'rating'.tr(),
-                                      color: contentTheme.primary,
-                                    )),
-                                    DataColumn(
-                                        label: MyText.labelLarge(
-                                      'sku'.tr(),
-                                      color: contentTheme.primary,
-                                    )),
-                                    DataColumn(
-                                        label: MyText.labelLarge(
-                                      'stock'.tr(),
-                                      color: contentTheme.primary,
-                                    )),
-                                    DataColumn(
-                                        label: MyText.labelLarge(
-                                      'orders'.tr(),
-                                      color: contentTheme.primary,
-                                    )),
-                                    DataColumn(
-                                        label: MyText.labelLarge(
-                                      'created_at'.tr().capitalizeWords,
-                                      color: contentTheme.primary,
-                                    )),
-                                    DataColumn(
-                                        label: MyText.labelLarge(
-                                      'action'.tr(),
-                                      color: contentTheme.primary,
+                                        label: Flexible(
+                                      child: MyText.labelLarge(
+                                        'Delete',
+                                        color: contentTheme.primary,
+                                      ),
                                     )),
                                   ],
-                                  rows: controller.products
-                                      .mapIndexed((index, data) =>
-                                          DataRow(cells: [
-                                            DataCell(MyText.bodyMedium(
-                                                '#${data.id}')),
-                                            DataCell(SizedBox(
-                                              width: 300,
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  MyContainer.none(
-                                                      borderRadiusAll: 20,
-                                                      clipBehavior: Clip
-                                                          .antiAliasWithSaveLayer,
-                                                      child: Image.asset(
-                                                        Images.squareImages[
-                                                            index %
-                                                                Images
-                                                                    .squareImages
-                                                                    .length],
-                                                        height: 40,
-                                                        width: 40,
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                  MySpacing.width(16),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      MyText.labelLarge(
-                                                          data.name.toString()),
-                                                      MyText.labelSmall(
-                                                        data.category
-                                                            .toString(),
-                                                        muted: true,
-                                                        letterSpacing: 0,
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            )),
-                                            DataCell(MyText.bodyMedium(
-                                                '\$${data.price}')),
-                                            DataCell(Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  LucideIcons.star,
-                                                  color:
-                                                      AppColors.ratingStarColor,
-                                                  size: 20,
-                                                ),
-                                                MySpacing.width(4),
-                                                MyText.bodySmall(
-                                                    '${data.rating} (${data.ratingCount})')
-                                              ],
-                                            )),
-                                            DataCell(MyText.bodyMedium(
-                                                '${data.sku}')),
-                                            DataCell(MyText.bodyMedium(
-                                                '${data.stock}')),
-                                            DataCell(MyText.bodyMedium(
-                                                '${data.ordersCount}')),
-                                            DataCell(Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                MyText.labelLarge(
-                                                    '${Utils.getDateStringFromDateTime(data.createdAt, showMonthShort: true)}'),
-                                                MySpacing.width(4),
-                                                MyText.bodySmall(
-                                                  '${Utils.getTimeStringFromDateTime(data.createdAt, showSecond: false)}',
-                                                  muted: true,
-                                                  fontWeight: 600,
-                                                )
-                                              ],
-                                            )),
-                                            DataCell(Align(
-                                              alignment: Alignment.center,
-                                              child: MyContainer.bordered(
-                                                onTap: () => {},
-                                                padding: MySpacing.xy(6, 6),
-                                                borderColor: contentTheme
-                                                    .primary
-                                                    .withAlpha(40),
-                                                child: Icon(
-                                                  LucideIcons.pencil,
-                                                  size: 12,
-                                                  color: contentTheme.primary,
-                                                ),
-                                              ),
-                                            )),
-                                            // DataCell(MyText.bodyMedium('${DateTime.tryParse('2022-11-26T15:56:14Z')}')),
-                                          ]))
-                                      .toList()),
-                            ),
+                                  rows: controller.categoryData.map((category) {
+                                    return DataRow(cells: [
+                                      DataCell(Text('${category.id}')),
+                                      DataCell(
+                                          Text(category.languages.first.name)),
+                                      DataCell(IconButton(
+                                        icon: const Icon(Icons.edit,
+                                            color: Colors.blue),
+                                        onPressed: () async {
+                                          final categoryId = category
+                                              .id; // Get the category ID
+                                          final success =
+                                              await AddProductsController()
+                                                  .editCategory(
+                                                      categoryId: categoryId);
+                                          if (success) {
+                                            Navigator.pushNamed(
+                                              // ignore: use_build_context_synchronously
+                                              context,
+                                              '/edit-categories',
+                                              arguments: AddProductsController()
+                                                  .categori
+                                                  .id,
+                                            );
+                                          } else {
+                                            // ignore: use_build_context_synchronously
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      AddProductsController()
+                                                          .message)),
+                                            );
+                                          }
+                                        },
+                                      )),
+                                      DataCell(
+                                        IconButton(
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.red),
+                                          onPressed: () async {
+                                            final confirmed =
+                                                await showDialog<bool>(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      'Confirm Delete'),
+                                                  content: const Text(
+                                                      'Are you sure you want to delete this category?'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop(
+                                                            false); // Return false
+                                                      },
+                                                      child: const Text('No'),
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop(
+                                                            true); // Return true
+                                                      },
+                                                      child: const Text('Yes'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+
+                                            if (confirmed == true) {
+                                              // Execute delete if confirmed
+                                              final success =
+                                                  await AddProductsController()
+                                                      .deleteCategory(
+                                                context: context,
+                                                categoryId: category.id,
+                                              );
+
+                                              print('success ---$success');
+                                              if (success) {
+                                                controller.fetchCategoryData();
+                                              }
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ]);
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
                           ),
+                          _buildPaginationControls(controller),
                         ],
                       )),
                 ],
               );
             }));
+  }
+
+  Widget _buildPaginationControls(
+      EcommerceProductsController categoryProvider) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.first_page),
+            onPressed: categoryProvider.currentPage > 1
+                ? () => categoryProvider.goToPage(1)
+                : null,
+          ),
+          IconButton(
+            icon: const Icon(Icons.navigate_before),
+            onPressed: categoryProvider.currentPage > 1
+                ? () =>
+                    categoryProvider.goToPage(categoryProvider.currentPage - 1)
+                : null,
+          ),
+          Text(
+            'Page ${categoryProvider.currentPage} of ${categoryProvider.lastPage}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          IconButton(
+            icon: const Icon(Icons.navigate_next),
+            onPressed: categoryProvider.currentPage < categoryProvider.lastPage
+                ? () =>
+                    categoryProvider.goToPage(categoryProvider.currentPage + 1)
+                : null,
+          ),
+          IconButton(
+            icon: const Icon(Icons.last_page),
+            onPressed: categoryProvider.currentPage < categoryProvider.lastPage
+                ? () => categoryProvider.goToPage(categoryProvider.lastPage)
+                : null,
+          ),
+        ],
+      ),
+    );
   }
 }

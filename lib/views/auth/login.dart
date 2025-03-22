@@ -125,7 +125,10 @@ class LoginPageState extends State<LoginPage>
                   MySpacing.height(28),
                   Center(
                     child: MyButton.rounded(
-                      onPressed: controller.onLogin,
+                      onPressed: (){
+                        controller.onLogin();
+                      }
+                      ,
                       elevation: 0,
                       padding: MySpacing.xy(20, 16),
                       backgroundColor: contentTheme.primary,
