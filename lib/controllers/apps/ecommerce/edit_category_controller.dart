@@ -84,13 +84,15 @@ class AddProductsController extends MyController {
   late CategoryEditData categori;
   String parentCategory = '0';
   String orderNumber = '0';
-  String name = '';
+  // String name = '';
   String? status = '1';
-  String discriptions = '';
-  String seourl = '';
+  // String discriptions = '';
+  // String seourl = '';
   String isfeatured = '0';
-  File? image;
-  File? image2;
+  final categoryNameController = TextEditingController();
+  final descriptionsController = TextEditingController();
+  final seoUrlController = TextEditingController();
+
   bool isMenuOpen = false;
 
   // Getters and Setters for data
@@ -100,9 +102,6 @@ class AddProductsController extends MyController {
     _categoryData = value;
     update();
   }
-
-
-
 
   Uint8List? webImage;
   Uint8List? webImage2;
@@ -115,57 +114,63 @@ class AddProductsController extends MyController {
 
   /// Method to create brand data
   Future<bool> createCateogryData({
-    required String? categoryName,
-    required String? categoryStatus,
-    required String? seoUrl,
-    required String? descriptions,
-    required dynamic imageFile,
-    required dynamic logoFile,
+    // required String? categoryName,
+    // required String? categoryStatus,
+    // required String? seoUrl,
+    // required String? descriptions,
+    // required dynamic imageFile,
+    // required dynamic logoFile,
+    BuildContext? context,
   }) async {
     createCategoryLoading = true;
     update();
+    print('loding is--$createCategoryLoading');
     try {
       final response = await authService.addCategory(
-          categoryName: categoryName,
+          categoryName: categoryNameController.text,
           parentCategory: '0',
           orderNumber: '0',
-          categoryStatus: categoryStatus,
-          descriptions: descriptions,
-          imageFile: image,
-          imageFile2: image2,
-          seoUrl: seoUrl);
+          categoryStatus: status,
+          descriptions: descriptionsController.text,
+          imageFile: webImage,
+          imageFile2: webImage2,
+          seoUrl: seoUrlController.text);
 
       if (response!.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data;
         print('category adding responce iss--$responseData');
         print('date ---$responseData');
         if (responseData['status'] == 1) {
-          message = responseData['message'] ?? '';
-          createCategoryLoading=false;
+          toastMsg(context!, responseData['message']);
+          createCategoryLoading = false;
+          status = '1';
+          webImage = null;
+          webImage2 = null;
+          categoryNameController.clear();
+          descriptionsController.clear();
+          seoUrlController.clear();
           update();
           return true;
         } else {
-          message = responseData['message'] ?? 'Failed to create brand';
+          toastMsg(context!, responseData['message']);
 
-          createCategoryLoading=false;
+          createCategoryLoading = false;
           update();
           return false;
         }
       } else {
-        message = 'Server error: ${response.statusCode}';
-        createCategoryLoading=false;
+        toastMsg(context!, 'Server error: ${response.statusCode}');
+        createCategoryLoading = false;
         update();
         return false;
       }
     } catch (e) {
-      createCategoryLoading=false;
+      createCategoryLoading = false;
       update();
-      message = 'Error while creating brand: $e';
+      toastMsg(context!, 'Error while creating brand: $e');
     }
-
-    createCategoryLoading=false;
+    createCategoryLoading = false;
     update();
-
     return false;
   }
 
@@ -174,18 +179,17 @@ class AddProductsController extends MyController {
   }) async {
     isLoading = true;
     update();
-
     try {
       final response = await authService.editCategories(
         categoryId!,
       );
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = json.decode(response.body);
         if (responseData['status'] == 1) {
           final categoryeditResponse =
-          CategoryEditResponse.fromJson(responseData);
+              CategoryEditResponse.fromJson(responseData);
           categori = categoryeditResponse.data;
+          print('--${jsonEncode(categori)}');
           message = responseData['message'] ?? 'Items viewing failed';
           return true;
         } else {
@@ -221,15 +225,14 @@ class AddProductsController extends MyController {
     update();
 
     try {
-
       final response = await authService.updateCategory(
           categoryId: categoryId,
           categoryName: categoryName,
           parentCategory: '0',
           categoryStatus: categoryStatus,
           descriptions: descriptions,
-          imageFile: image,
-          imageFile2: image2,
+          imageFile: webImage,
+          imageFile2: webImage2,
           seoUrl: seoUrl);
       if (response!.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data;
@@ -256,10 +259,8 @@ class AddProductsController extends MyController {
     return false;
   }
 
-  Future<bool> deleteCategory({
-    required int? categoryId,
-    BuildContext? context
-  }) async {
+  Future<bool> deleteCategory(
+      {required int? categoryId, BuildContext? context}) async {
     isLoading = true;
     update();
 
@@ -272,11 +273,12 @@ class AddProductsController extends MyController {
         if (responseData['status'] == 1) {
           message = responseData['message'] ?? 'Category Deleted Successfully';
           isLoading = false; // Ensure loading is false
-          ScaffoldMessenger.of(context!)
-              .showSnackBar(
+          ScaffoldMessenger.of(context!).showSnackBar(
             SnackBar(
               content: Text(
-               message,style: TextStyle(color: Colors.white,fontSize: 25),),
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
               backgroundColor: Colors.blueAccent,
             ),
           );
@@ -286,11 +288,12 @@ class AddProductsController extends MyController {
           message = responseData['message'] ?? 'Failed to delete category';
           print('messasdasda-----_$message');
           update();
-          ScaffoldMessenger.of(context!)
-              .showSnackBar(
+          ScaffoldMessenger.of(context!).showSnackBar(
             SnackBar(
               content: Text(
-                message,style: TextStyle(color: Colors.white,fontSize: 25),),
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
               backgroundColor: Colors.blueAccent,
             ),
           );
@@ -298,11 +301,12 @@ class AddProductsController extends MyController {
       } else {
         message = 'Server error: ${response.statusCode}';
         update();
-        ScaffoldMessenger.of(context!)
-            .showSnackBar(
+        ScaffoldMessenger.of(context!).showSnackBar(
           SnackBar(
             content: Text(
-              message,style: TextStyle(color: Colors.white,fontSize: 25),),
+              message,
+              style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
             backgroundColor: Colors.blueAccent,
           ),
         );
@@ -313,7 +317,19 @@ class AddProductsController extends MyController {
     }
 
     isLoading = false; // Ensure loading is false
-   update();
+    update();
     return false;
+  }
+
+  void toastMsg(BuildContext context, String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(color: Colors.white, fontSize: 25),
+        ),
+        backgroundColor: Colors.blueAccent,
+      ),
+    );
   }
 }

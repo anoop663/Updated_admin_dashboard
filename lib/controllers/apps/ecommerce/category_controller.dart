@@ -8,10 +8,10 @@ import 'package:flatten/models/product.dart';
 
 import 'package:get/get.dart';
 
-class EcommerceProductsController extends MyController {
+class EcommerceCategoryController extends MyController {
   List<Product> products = [];
 
-  EcommerceProductsController();
+  EcommerceCategoryController();
 
   @override
   void onInit() {
