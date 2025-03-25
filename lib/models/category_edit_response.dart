@@ -26,7 +26,7 @@ class CategoryEditData {
   final int id;
   final int parentId;
   final int orderNumber;
-  final String image;
+  final String? image;
   final int status;
   final String slug;
   final int inbuiltCategoryId;

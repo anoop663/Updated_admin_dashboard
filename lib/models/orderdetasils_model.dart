@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final orderDetails = orderDetailsFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -31,74 +34,74 @@ class OrderDetails {
 
 class Data {
   int id;
-  dynamic invoiceNumber;
+  String invoiceNumber;
   int storeId;
-  dynamic storeName;
+  String storeName;
   int customerId;
-  dynamic billingAddressId;
-  dynamic billingAddressType;
-  dynamic billingName;
-  dynamic billingEmail;
-  dynamic billingPhone;
-  dynamic billingAddress;
-  dynamic billingCity;
-  dynamic billingAreaNumber;
-  dynamic billingCountry;
-  dynamic billingZipcode;
+  int billingAddressId;
+  String billingAddressType;
+  String billingName;
+  String billingEmail;
+  String billingPhone;
+  String? billingAddress;
+  String billingCity;
+  String billingAreaNumber;
+  String billingCountry;
+  String billingZipcode;
   dynamic billingLatitude;
   dynamic billingLongitude;
   dynamic billingLandmark;
-  dynamic billingRegion;
+  String billingRegion;
   dynamic shippingLandmark;
-  dynamic shippingRegion;
-  dynamic shippingAddressId;
-  dynamic shippingAddressType;
-  dynamic shippingName;
-  dynamic shippingEmail;
-  dynamic shippingPhone;
-  dynamic shippingAddress;
-  dynamic shippingCity;
-  dynamic shippingAreaNumber;
-  dynamic shippingCountry;
-  dynamic shippingZipcode;
+  String shippingRegion;
+  int shippingAddressId;
+  String shippingAddressType;
+  String shippingName;
+  String shippingEmail;
+  String shippingPhone;
+  String shippingAddress;
+  String shippingCity;
+  String shippingAreaNumber;
+  String shippingCountry;
+  String shippingZipcode;
   dynamic shippingLatitude;
   dynamic shippingLongitude;
-  dynamic comments;
+  String comments;
   dynamic deliveryNotes;
-  dynamic cartId;
-  dynamic totalAmount;
+  int cartId;
+  double totalAmount;
   dynamic couponId;
   dynamic couponCode;
-  dynamic couponDiscount;
-  dynamic couponDiscountType;
-  dynamic discountAmount;
-  dynamic swanCredit;
-  dynamic walletAmount;
-  dynamic shippingCharge;
-  dynamic totalTaxAmount;
+  String couponDiscount;
+  int couponDiscountType;
+  String discountAmount;
+  String swanCredit;
+  int walletAmount;
+  String shippingCharge;
+  String totalTaxAmount;
   double netTotalAmount;
-  dynamic paymentMode;
+  int paymentMode;
   dynamic deliveryMode;
   dynamic pickupStoreId;
-  dynamic languageId;
-  dynamic currencyId;
-  dynamic currencyValue;
-  dynamic ip;
-  dynamic userAgent;
-  dynamic orderStatusId;
-  dynamic orderStatus;
-  dynamic paymentStatus;
-  dynamic orderCancelReason;
+  int languageId;
+  int currencyId;
+  String currencyValue;
+  String ip;
+  String userAgent;
+  int orderStatusId;
+  String orderStatus;
+  int paymentStatus;
+  String orderCancelReason;
   dynamic orderCancelDescription;
-  dynamic giftWrap;
+  int giftWrap;
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
-  dynamic orderWalletAmount;
-  dynamic orderTotalAmount;
-  dynamic orderNetTotalAmount;
-  dynamic orderShippingCharge;
-  dynamic adminOrderStatus;
+  String orderWalletAmount;
+  String orderTotalAmount;
+  String orderNetTotalAmount;
+  String orderShippingCharge;
+  String adminOrderStatus;
   dynamic aramexshipping;
   List<dynamic> walletUsed;
   List<dynamic> walletCancelled;
@@ -219,7 +222,7 @@ class Data {
     comments: json["comments"],
     deliveryNotes: json["delivery_notes"],
     cartId: json["cart_id"],
-    totalAmount: json["total_amount"],
+    totalAmount: json["total_amount"]?.toDouble(),
     couponId: json["coupon_id"],
     couponCode: json["coupon_code"],
     couponDiscount: json["coupon_discount"],
@@ -340,45 +343,45 @@ class Data {
 class Item {
   int id;
   int orderId;
-  dynamic sellerInvoiceReference;
-  dynamic itemCgst;
-  dynamic itemSgst;
-  dynamic itemIgst;
-  dynamic itemUtgst;
-  dynamic itemCess;
-  dynamic shippingCgst;
-  dynamic shippingSgst;
-  dynamic shippingIgst;
-  dynamic shippingUtgst;
-  dynamic shippingCess;
+  String sellerInvoiceReference;
+  String itemCgst;
+  String itemSgst;
+  String itemIgst;
+  String itemUtgst;
+  String itemCess;
+  String shippingCgst;
+  String shippingSgst;
+  String shippingIgst;
+  String shippingUtgst;
+  String shippingCess;
   int productId;
   int storeId;
   dynamic paidToSellerReference;
-  dynamic sellerRefundAmount;
-  dynamic paidAmountToAdmin;
+  String sellerRefundAmount;
+  String paidAmountToAdmin;
   int paidToAdmin;
   dynamic paidToAdminDate;
   dynamic paidToAdminReference;
-  dynamic productName;
-  dynamic quantity;
-  dynamic amount;
-  dynamic taxAmount;
+  String productName;
+  String quantity;
+  String amount;
+  String taxAmount;
   dynamic couponAmount;
-  dynamic itemStatus;
-  dynamic shippingCharge;
-  dynamic returnPeriod;
-  dynamic refundPayable;
-  dynamic refundPayed;
+  int itemStatus;
+  String shippingCharge;
+  int returnPeriod;
+  String refundPayable;
+  String refundPayed;
   dynamic refundBankId;
   dynamic refundBankDetails;
   dynamic itemCancelReason;
   dynamic itemCancelDescription;
-  dynamic cgst;
-  dynamic sgst;
-  dynamic igst;
-  dynamic utgst;
-  dynamic cess;
-  dynamic giftWrap;
+  String cgst;
+  String sgst;
+  String igst;
+  String utgst;
+  String cess;
+  int giftWrap;
   DateTime createdAt;
   DateTime updatedAt;
   Product product;
@@ -527,41 +530,41 @@ class Item {
 
 class Product {
   int id;
-  dynamic code;
+  String code;
   int userId;
-  dynamic status;
+  int status;
   int parentId;
-  dynamic isShowInList;
-  dynamic manufacturerId;
-  dynamic taxClassId;
-  dynamic slug;
-  dynamic isFeatured;
-  dynamic isPuliAssured;
-  dynamic weight;
-  dynamic sizeChart;
-  dynamic orderNumber;
-  dynamic rewardPoint;
-  dynamic purchaseReward;
-  dynamic metaTitle;
-  dynamic metaDescription;
+  int isShowInList;
+  int manufacturerId;
+  int taxClassId;
+  String slug;
+  int isFeatured;
+  int isPuliAssured;
+  String weight;
+  String sizeChart;
+  int orderNumber;
+  String rewardPoint;
+  String purchaseReward;
+  String? metaTitle;
+  String? metaDescription;
   dynamic metaKeywords;
-  dynamic cgst;
-  dynamic sgst;
-  dynamic igst;
-  dynamic utgst;
-  dynamic cess;
-  dynamic isAlisonsAssured;
+  String cgst;
+  String sgst;
+  String igst;
+  String utgst;
+  String cess;
+  int isAlisonsAssured;
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
-  dynamic isLatest;
-  dynamic isPopular;
-  dynamic isTrending;
-  dynamic isFlashsale;
-  dynamic variantProductId;
-  dynamic productVariant;
-  dynamic isGender;
-  dynamic homeImg;
+  int isLatest;
+  int isPopular;
+  int isTrending;
+  int isFlashsale;
+  int variantProductId;
+  int? productVariant;
+  int? isGender;
+  String? homeImg;
   List<ThisOption> thisOptions;
 
   Product({
@@ -690,8 +693,8 @@ class ThisOption {
   String name;
   int productId;
   int id;
-  dynamic type;
-  ThisValues thisValues;
+  String type;
+  ThisValues? thisValues;
 
   ThisOption({
     required this.optionId,
@@ -708,7 +711,7 @@ class ThisOption {
     productId: json["product_id"],
     id: json["id"],
     type: json["type"],
-    thisValues: ThisValues.fromJson(json["this_values"]),
+    thisValues: json["this_values"] == null ? null : ThisValues.fromJson(json["this_values"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -717,15 +720,15 @@ class ThisOption {
     "product_id": productId,
     "id": id,
     "type": type,
-    "this_values": thisValues.toJson(),
+    "this_values": thisValues?.toJson(),
   };
 }
 
 class ThisValues {
   int optionValueId;
-  dynamic value;
-  dynamic text;
-  dynamic slug;
+  String value;
+  String text;
+  String slug;
   int productOptionId;
 
   ThisValues({
@@ -755,7 +758,7 @@ class ThisValues {
 
 class StatusLanguage {
   int statusId;
-  dynamic statusText;
+  String statusText;
 
   StatusLanguage({
     required this.statusId,

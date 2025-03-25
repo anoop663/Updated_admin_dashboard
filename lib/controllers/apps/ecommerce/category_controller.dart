@@ -1,6 +1,8 @@
+// ignore_for_file: unused_import, avoid_print
+
 import 'dart:convert';
 
-import 'package:flatten/controllers/apps/ecommerce/edit_products_controller.dart';
+import 'package:flatten/controllers/apps/ecommerce/edit_category_controller.dart';
 import 'package:flatten/controllers/my_controller.dart';
 import 'package:flatten/data/api_provider.dart';
 import 'package:flatten/models/category_list_response.dart' as category;
@@ -24,7 +26,7 @@ class EcommerceCategoryController extends MyController {
   }
 
   void goToCreateProduct() {
-    Get.toNamed('/apps/ecommerce/add_product');
+    Get.toNamed('/apps/ecommerce/add_category');
   }
 
   /// fetch category
@@ -46,22 +48,28 @@ class EcommerceCategoryController extends MyController {
 
   final AuthService authService = AuthService();
 
-  Future<void> fetchCategoryData({int page = 1}) async {
-    isLoading = true;
+  Future<void> fetchCategoryData({int page = 1,bool needLoading=true}) async {
+    isLoading = needLoading;
+    update(); // Notify UI about the loading state
 
     try {
       final response = await authService.loadCategories(page);
+
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print('cateogroy is-- $responseData');
+        print('Category response: $responseData');
+
         if (responseData['status'] == 1) {
-          final categoryResponse =
-              category.CategoryResponse.fromJson(responseData);
+          final categoryResponse = category.CategoryResponse.fromJson(responseData);
+
+          // Clear previous data before updating the list
+          categoryData = [];
+
+          // Set new data
           categoryData = categoryResponse.data.data;
           message = responseData['message'] ?? 'Items viewing failed';
           currentPage = categoryResponse.data.currentPage;
           lastPage = categoryResponse.data.lastPage;
-          update();
         } else {
           message = 'Failed to load data';
         }
@@ -73,8 +81,9 @@ class EcommerceCategoryController extends MyController {
     }
 
     isLoading = false;
-    update();
+    update(); // Notify UI after data update
   }
+
 
   void goToPage(int page) {
     if (page > 0 && page <= lastPage) {

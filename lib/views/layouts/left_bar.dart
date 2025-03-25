@@ -7,7 +7,6 @@ import 'package:flatten/helpers/widgets/my_card.dart';
 import 'package:flatten/helpers/widgets/my_container.dart';
 import 'package:flatten/helpers/widgets/my_spacing.dart';
 import 'package:flatten/helpers/widgets/my_text.dart';
-import 'package:flatten/images.dart';
 import 'package:flatten/widgets/custom_pop_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -78,8 +77,8 @@ class _LeftBarState extends State<LeftBar>
                       onTap: () {
                         Get.toNamed('/dashboard');
                       },
-                      child: Image.asset(Images.logoIcon,
-                          height: widget.isCondensed ? 12 : 16)),
+                      child: Image.asset('assets/images/logo/logo.png',
+                          height: widget.isCondensed ? 25 : 25)),
                   if (!widget.isCondensed)
                     Flexible(
                       fit: FlexFit.loose,
@@ -122,7 +121,7 @@ class _LeftBarState extends State<LeftBar>
                       MenuItem(
                         title: "categories".tr(),
                         isCondensed: isCondensed,
-                        route: '/apps/ecommerce/products',
+                        route: '/apps/ecommerce/category',
                       ),
                       MenuItem(
                         title: "add_cateogry".tr(),
@@ -139,12 +138,12 @@ class _LeftBarState extends State<LeftBar>
                     children: [
                       MenuItem(
                         title: "Brands List".tr(),
-                        route: '/auth/login',
+                        route: '/apps/ecommerce/brand',
                         isCondensed: widget.isCondensed,
                       ),
                       MenuItem(
                         title: "Add Brand".tr(),
-                        route: '/auth/register',
+                        route: '/apps/ecommerce/add_brand',
                         isCondensed: widget.isCondensed,
                       ),
                     ],
@@ -156,14 +155,19 @@ class _LeftBarState extends State<LeftBar>
                     children: [
                       MenuItem(
                         title: "Product List".tr(),
-                        route: '/auth/login',
+                        route: '/apps/ecommerce/product',
                         isCondensed: widget.isCondensed,
                       ),
                       MenuItem(
-                        title: "Add Products".tr(),
-                        route: '/auth/register',
+                        title: "Add Product ".tr(),
+                        route: '/apps/ecommerce/add_product',
                         isCondensed: widget.isCondensed,
                       ),
+                      // MenuItem(
+                      //   title: "Add Product ".tr(),
+                      //   route: '/apps/ecommerce/product-detail',
+                      //   isCondensed: widget.isCondensed,
+                      // ),
                     ],
                   ),
                   MenuWidget(
@@ -171,9 +175,14 @@ class _LeftBarState extends State<LeftBar>
                     isCondensed: isCondensed,
                     title: "Orders".tr(),
                     children: [
+                      // MenuItem(
+                      //   title: "My orders".tr(),
+                      //   route: '/apps/ecommerce/invoice',
+                      //   isCondensed: widget.isCondensed,
+                      // ),
                       MenuItem(
                         title: "My orders".tr(),
-                        route: '/auth/login',
+                        route: '/apps/ecommerce/invoiceList',
                         isCondensed: widget.isCondensed,
                       ),
                     ],

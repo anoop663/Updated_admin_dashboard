@@ -1,8 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:flatten/controllers/my_controller.dart';
 import 'package:flatten/data/api_provider.dart';
-import 'package:flatten/helpers/services/auth_service.dart';
 import 'package:flatten/helpers/services/storage/local_storage.dart';
 import 'package:flatten/helpers/widgets/my_form_validator.dart';
 import 'package:flatten/helpers/widgets/my_validators.dart';
@@ -55,7 +56,7 @@ class LoginController extends MyController {
       print('responce iss---${response.statusCode}');
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-
+        print('responcedasdf iss---$responseData');
         if (responseData['status'] == 1) {
           // Store token in secure storage
           String token = responseData['token'];
@@ -70,7 +71,7 @@ class LoginController extends MyController {
                   "/dashboard";
           print('next url---$nextUrl');
           Get.toNamed(
-            nextUrl,
+           '/dashboard'
           );
           loading = false;
           update();

@@ -1,5 +1,4 @@
 import 'package:flatten/data/api_provider.dart';
-import 'package:flatten/helpers/services/auth_service.dart';
 import 'package:flatten/helpers/services/localizations/language.dart';
 import 'package:flatten/helpers/theme/theme_customizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';

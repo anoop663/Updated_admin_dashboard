@@ -1,10 +1,13 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unused_import, avoid_web_libraries_in_flutter, unnecessary_import, avoid_print, duplicate_import
 
-import 'dart:io';
+import 'dart:html';
+import 'package:flatten/views/apps/ecommerce/network_image.dart';
+import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flatten/controllers/apps/ecommerce/edit_products_controller.dart';
-import 'package:flatten/controllers/apps/ecommerce/products_controller.dart';
+import 'package:flatten/controllers/apps/ecommerce/edit_category_controller.dart';
+import 'package:flatten/controllers/apps/ecommerce/category_controller.dart';
 import 'package:flatten/helpers/extensions/string.dart';
 import 'package:flatten/helpers/theme/app_style.dart';
 import 'package:flatten/helpers/utils/mixins/ui_mixin.dart';
@@ -19,6 +22,7 @@ import 'package:flatten/helpers/widgets/my_flex_item.dart';
 import 'package:flatten/helpers/widgets/my_spacing.dart';
 import 'package:flatten/helpers/widgets/my_text.dart';
 import 'package:flatten/helpers/widgets/my_text_style.dart';
+import 'package:flatten/models/category_edit_response.dart';
 import 'package:flatten/views/layouts/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -28,6 +32,8 @@ import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
+
 class AddCategoryPage extends StatefulWidget {
   const AddCategoryPage({super.key});
 
@@ -40,24 +46,62 @@ class _AddProductPageState extends State<AddCategoryPage>
   late AddProductsController controller;
 
   final formKey = GlobalKey<FormState>();
-  final categoryNameController = TextEditingController();
-  final descriptionsController = TextEditingController();
-  final seoUrlController = TextEditingController();
+  late TextEditingController categoryNameController;
+  late TextEditingController descriptionsController;
+  late TextEditingController seoUrlController;
 
   @override
   void initState() {
     super.initState();
     controller = Get.put(AddProductsController());
-    controller.status = '1';
-    controller.image=null;
-    controller.image2=null;
-    controller.webImage=null;
-    controller.webImage2=null;
 
+    controller.webImage = null;
+    controller.webImage2 = null;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    controller = Get.put(AddProductsController());
+
+    // Safely retrieve arguments
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    CategoryEditData? data;
+    final categoryId = args?['id'];
+
+    if (args != null && args['data'] != null) {
+      data = args['data'];
+    }
+
+    if (categoryId != null) {
+      categoryNameController =
+          TextEditingController(text: data?.languages.first.name ?? '');
+      descriptionsController =
+          TextEditingController(text: data?.languages.first.description ?? '');
+      seoUrlController = TextEditingController(text: data?.slug ?? '');
+      controller.status = data?.status.toString();
+    } else {
+      categoryNameController = TextEditingController();
+      descriptionsController = TextEditingController();
+      seoUrlController = TextEditingController();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    CategoryEditData? data;
+    final categoryId = args?['id'];
+
+    if (args != null && args['data'] != null) {
+      data = args['data'];
+    }
+
     Future<void> pickImage(bool isLogo) async {
       try {
         if (kIsWeb) {
@@ -74,25 +118,12 @@ class _AddProductPageState extends State<AddCategoryPage>
             }
             controller.update(); // Notify GetX UI update
           }
-        } else {
-          // Mobile file picker
-          final picker = ImagePicker();
-          final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-          if (pickedFile != null) {
-            final selectedImage = File(pickedFile.path);
-            if (isLogo) {
-              controller.image2 = selectedImage;
-            } else {
-              controller.image = selectedImage;
-            }
-            controller.update(); // Notify GetX UI update
-          }
         }
       } catch (e) {
         debugPrint('Error picking image: $e');
       }
     }
+
     return Layout(
       child: GetBuilder<AddProductsController>(
         init: controller,
@@ -171,13 +202,17 @@ class _AddProductPageState extends State<AddCategoryPage>
                                     MySpacing.height(8),
                                     TextFormField(
                                       controller: categoryNameController,
-                                      validator: (value) => value!.isEmpty
-                                          ? 'Category name is required'
-                                          : null,
-                                      onChanged: (value) {
-                                        controller.name = value;
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Category name is required';
+                                        } else {
+                                          return null;
+                                        }
                                       },
-                                      keyboardType: TextInputType.name,
+                                      // onChanged: (value) {
+                                      //   controller.name = value;
+                                      // },
+                                      keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                         hintText: "eg: Category name",
                                         hintStyle:
@@ -206,6 +241,7 @@ class _AddProductPageState extends State<AddCategoryPage>
                                               DropdownButtonFormField<String>(
                                                 dropdownColor:
                                                     colorScheme.surface,
+                                                value: controller.status,
                                                 menuMaxHeight: 200,
                                                 isDense: true,
                                                 items: [
@@ -259,11 +295,15 @@ class _AddProductPageState extends State<AddCategoryPage>
                                     TextFormField(
                                       controller: descriptionsController,
                                       maxLines: 3,
-                                      validator: (value) => value!.isEmpty
-                                          ? 'Description is required'
-                                          : null,
-                                      onChanged: (value) =>
-                                          controller.discriptions = value,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Description is required';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                      // onChanged: (value) =>
+                                      //     controller.discriptions = value,
                                       keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                         hintText: "",
@@ -285,9 +325,9 @@ class _AddProductPageState extends State<AddCategoryPage>
                                     MySpacing.height(8),
                                     TextFormField(
                                       controller: seoUrlController,
-                                      onChanged: (value) =>
-                                          controller.seourl = value,
-                                      keyboardType: TextInputType.multiline,
+                                      // onChanged: (value) =>
+                                      //     controller.seourl = value,
+                                      // keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                         hintText: "",
                                         hintStyle:
@@ -301,12 +341,10 @@ class _AddProductPageState extends State<AddCategoryPage>
                                             FloatingLabelBehavior.never,
                                       ),
                                     ),
-
                                     MySpacing.height(25),
                                     MyText.labelMedium(
                                       'Category Image',
                                     ),
-
                                     const SizedBox(height: 16),
                                     Card(
                                       elevation: 4,
@@ -315,75 +353,87 @@ class _AddProductPageState extends State<AddCategoryPage>
                                         child: Column(
                                           children: [
                                             ListTile(
-                                              title: const Text('Category Image'),
+                                              title:
+                                                  const Text('Category Image'),
                                               trailing: ElevatedButton(
-                                                onPressed: () async => await pickImage(false),
-                                                child: const Text('Choose File'),
+                                                onPressed: () async =>
+                                                    await pickImage(false),
+                                                child:
+                                                    const Text('Choose File'),
                                               ),
                                               subtitle: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  if (controller.image != null || controller.webImage != null)
-                                                    Column(
-                                                      children: [
-                                                        Text(
-                                                          'Selected: ${controller.image != null ? controller.image!.path.split('/').last : "Web Image"}',
-                                                        ),
-                                                        const SizedBox(height: 8),
-                                                        controller.image != null
-                                                            ? Image.file(
-                                                          controller.image!,
-                                                          width: 100,
-                                                          height: 100,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                            : Image.memory(
-                                                          controller.webImage!,
-                                                          width: 100,
-                                                          height: 100,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ],
-                                                    )
-                                                  else
-                                                    const Text('No image selected'),
+                                                  Column(
+                                                    children: [
+                                                      const SizedBox(height: 8),
+                                                      (controller.webImage !=
+                                                                  null &&
+                                                              controller
+                                                                  .webImage!
+                                                                  .isNotEmpty)
+                                                          ? Image.memory(
+                                                              controller
+                                                                  .webImage!,
+                                                              width: 100,
+                                                              height: 100,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : (data?.image !=
+                                                                      null &&
+                                                                  data!.image!
+                                                                      .isNotEmpty)
+                                                              ? NetworkImageWidget(
+                                                                  imageUrl:
+                                                                      'https://swan.alisonsnewdemo.online/images/category/${data.image}')
+                                                              : const Text(
+                                                                  'No image available'),
+                                                    ],
+                                                  )
                                                 ],
                                               ),
                                             ),
                                             const Divider(),
                                             ListTile(
-                                              title: const Text('Category 2nd Image'),
+                                              title: const Text(
+                                                  'Category 2nd Image'),
                                               trailing: ElevatedButton(
-                                                onPressed: () async => await pickImage(true),
-                                                child: const Text('Choose File'),
+                                                onPressed: () async =>
+                                                    await pickImage(true),
+                                                child:
+                                                    const Text('Choose File'),
                                               ),
                                               subtitle: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  if (controller.image2 != null || controller.webImage2 != null)
-                                                    Column(
-                                                      children: [
-                                                        Text(
-                                                          'Selected: ${controller.image2 != null ? controller.image2!.path.split('/').last : "Web Image"}',
-                                                        ),
-                                                        const SizedBox(height: 8),
-                                                        controller.image2 != null
-                                                            ? Image.file(
-                                                          controller.image2!,
-                                                          width: 100,
-                                                          height: 100,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                            : Image.memory(
-                                                          controller.webImage2!,
-                                                          width: 100,
-                                                          height: 100,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ],
-                                                    )
-                                                  else
-                                                    const Text('No image selected'),
+                                                  Column(
+                                                    children: [
+                                                      const SizedBox(height: 8),
+                                                      (controller.webImage2 !=
+                                                                  null &&
+                                                              controller
+                                                                  .webImage2!
+                                                                  .isNotEmpty)
+                                                          ? Image.memory(
+                                                              controller
+                                                                  .webImage2!,
+                                                              width: 100,
+                                                              height: 100,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : (data?.image !=
+                                                                      null &&
+                                                                  data!.image!
+                                                                      .isNotEmpty)
+                                                              ? NetworkImageWidget(
+                                                                  imageUrl:
+                                                                      'https://swan.alisonsnewdemo.online/images/category/${data.image2}')
+                                                              : const Text(
+                                                                  'No image available'),
+                                                    ],
+                                                  )
                                                 ],
                                               ),
                                             ),
@@ -391,84 +441,6 @@ class _AddProductPageState extends State<AddCategoryPage>
                                         ),
                                       ),
                                     ),
-
-
-                                    // MyText.labelMedium(
-                                    //   "status".tr(),
-                                    // ),
-                                    // MySpacing.height(4),
-                                    // Row(
-                                    //   children: [
-                                    //     Expanded(
-                                    //       child: Wrap(
-                                    //           spacing: 16,
-                                    //           children: Status.values
-                                    //               .map(
-                                    //                 (gender) => InkWell(
-                                    //                   onTap: () => controller
-                                    //                       .onChangeGender(
-                                    //                           gender),
-                                    //                   child: Row(
-                                    //                     mainAxisSize:
-                                    //                         MainAxisSize.min,
-                                    //                     children: [
-                                    //                       Radio<Status>(
-                                    //                         value: gender,
-                                    //                         activeColor: theme
-                                    //                             .colorScheme
-                                    //                             .primary,
-                                    //                         groupValue: controller
-                                    //                             .selectedGender,
-                                    //                         onChanged: controller
-                                    //                             .onChangeGender,
-                                    //                         visualDensity:
-                                    //                             getCompactDensity,
-                                    //                         materialTapTargetSize:
-                                    //                             MaterialTapTargetSize
-                                    //                                 .shrinkWrap,
-                                    //                       ),
-                                    //                       MySpacing.width(8),
-                                    //                       MyText.labelMedium(
-                                    //                         gender.name
-                                    //                             .capitalize!,
-                                    //                       ),
-                                    //                     ],
-                                    //                   ),
-                                    //                 ),
-                                    //               )
-                                    //               .toList()),
-                                    //     )
-                                    //   ],
-                                    // ),
-                                    // MySpacing.height(25),
-                                    // MyText.labelMedium(
-                                    //   "tags".tr(),
-                                    // ),
-                                    // MySpacing.height(8),
-                                    // Container(
-                                    //   alignment: Alignment.topLeft,
-                                    //   child: TextFormField(
-                                    //     maxLines: 3,
-                                    //     validator: controller.basicValidator
-                                    //         .getValidation('tags'),
-                                    //     controller: controller.basicValidator
-                                    //         .getController('tags'),
-                                    //     keyboardType: TextInputType.multiline,
-                                    //     decoration: InputDecoration(
-                                    //       hintText:
-                                    //           "fruits, vegetables, grocery, healthy, etc",
-                                    //       hintStyle: MyTextStyle.bodySmall(
-                                    //           xMuted: true),
-                                    //       border: outlineInputBorder,
-                                    //       enabledBorder: outlineInputBorder,
-                                    //       focusedBorder: focusedInputBorder,
-                                    //       contentPadding: MySpacing.all(16),
-                                    //       isCollapsed: true,
-                                    //       floatingLabelBehavior:
-                                    //           FloatingLabelBehavior.never,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     MySpacing.height(20),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -483,48 +455,85 @@ class _AddProductPageState extends State<AddCategoryPage>
                                           ),
                                         ),
                                         MySpacing.width(12),
-                                        MyButton(
-                                          onPressed: () async {
-                                            print(controller.name);
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              print('create api');
-                                              final status = await controller
-                                                  .createCateogryData(
-                                                categoryName: categoryNameController.text,
-                                                categoryStatus: controller.status,
-                                                descriptions: descriptionsController.text,
-                                                seoUrl: seoUrlController.text,
-                                                imageFile: kIsWeb ? controller.webImage : controller.image, // Web or Mobile image
-                                                logoFile: kIsWeb ? controller.webImage2 : controller.image2, // Web or Mobile logo
-                                              );
-
-                                              if (status && context.mounted) {
-                                                Get.find<
-                                                        EcommerceProductsController>()
-                                                    .fetchCategoryData();
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          controller.message)),
-                                                );
-                                              }
-                                            }
-                                          },
-                                          elevation: 0,
-                                          padding: MySpacing.xy(20, 16),
-                                          backgroundColor: contentTheme.primary,
-                                          borderRadiusAll:
-                                              AppStyle.buttonRadius.medium,
-                                          child: MyText.bodySmall(
-                                            controller.createCategoryLoading
-                                                ? 'Loading..'
-                                                : 'save'.tr(),
-                                            color: contentTheme.onPrimary,
-                                          ),
-                                        ),
+                                        categoryId == null
+                                            ? MyButton(
+                                                onPressed: () async {
+                                                  // print(controller.name);
+                                                  if (formKey.currentState!
+                                                      .validate()) {
+                                                    print('create api');
+                                                    final status = await controller
+                                                        .createCateogryData(
+                                                            context: context,
+                                                            categoryName:
+                                                                categoryNameController
+                                                                    .text,
+                                                            categoryStatus:
+                                                                controller
+                                                                    .status,
+                                                            descriptions:
+                                                                descriptionsController
+                                                                    .text,
+                                                            seoUrl:
+                                                                seoUrlController
+                                                                    .text);
+                                                    if (status) {
+                                                      categoryNameController
+                                                          .clear();
+                                                      descriptionsController
+                                                          .clear();
+                                                      seoUrlController.clear();
+                                                    }
+                                                  }
+                                                },
+                                                elevation: 0,
+                                                padding: MySpacing.xy(20, 16),
+                                                backgroundColor:
+                                                    contentTheme.primary,
+                                                borderRadiusAll: AppStyle
+                                                    .buttonRadius.medium,
+                                                child: MyText.bodySmall(
+                                                  controller
+                                                          .createCategoryLoading
+                                                      ? 'Loading..'
+                                                      : 'save'.tr(),
+                                                  color: contentTheme.onPrimary,
+                                                ),
+                                              )
+                                            : MyButton(
+                                                onPressed: () async {
+                                                  if (formKey.currentState!
+                                                      .validate()) {
+                                                    print('update api');
+                                                    await controller.updateCategoryData(
+                                                        categoryId: categoryId,
+                                                        context: context,
+                                                        categoryName:
+                                                            categoryNameController
+                                                                .text,
+                                                        categoryStatus:
+                                                            controller.status,
+                                                        descriptions:
+                                                            descriptionsController
+                                                                .text,
+                                                        seoUrl: seoUrlController
+                                                            .text);
+                                                  }
+                                                },
+                                                elevation: 0,
+                                                padding: MySpacing.xy(20, 16),
+                                                backgroundColor:
+                                                    contentTheme.primary,
+                                                borderRadiusAll: AppStyle
+                                                    .buttonRadius.medium,
+                                                child: MyText.bodySmall(
+                                                  controller
+                                                          .isLoading
+                                                      ? 'Loading..'
+                                                      : 'Update',
+                                                  color: contentTheme.onPrimary,
+                                                ),
+                                              )
                                       ],
                                     ),
                                   ],

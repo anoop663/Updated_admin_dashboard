@@ -1,6 +1,9 @@
+// ignore_for_file: unused_import, unnecessary_import, avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flatten/controllers/apps/ecommerce/category_controller.dart';
 import 'package:flatten/controllers/my_controller.dart';
 import 'package:flatten/data/api_provider.dart';
 import 'package:flatten/helpers/widgets/my_form_validator.dart';
@@ -8,6 +11,8 @@ import 'package:flatten/models/category_edit_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 enum Status {
   online,
@@ -81,17 +86,14 @@ class AddProductsController extends MyController {
   bool editCategoryLoading = false;
   bool createCategoryLoading = false;
   List<Category> _categoryData = [];
-  late CategoryEditData categori;
+  CategoryEditData? categori;
   String parentCategory = '0';
   String orderNumber = '0';
   // String name = '';
-  String? status = '1';
+  String? status;
   // String discriptions = '';
   // String seourl = '';
   String isfeatured = '0';
-  final categoryNameController = TextEditingController();
-  final descriptionsController = TextEditingController();
-  final seoUrlController = TextEditingController();
 
   bool isMenuOpen = false;
 
@@ -114,12 +116,10 @@ class AddProductsController extends MyController {
 
   /// Method to create brand data
   Future<bool> createCateogryData({
-    // required String? categoryName,
-    // required String? categoryStatus,
-    // required String? seoUrl,
-    // required String? descriptions,
-    // required dynamic imageFile,
-    // required dynamic logoFile,
+    required String? categoryName,
+    required String? categoryStatus,
+    required String? seoUrl,
+    required String? descriptions,
     BuildContext? context,
   }) async {
     createCategoryLoading = true;
@@ -127,14 +127,14 @@ class AddProductsController extends MyController {
     print('loding is--$createCategoryLoading');
     try {
       final response = await authService.addCategory(
-          categoryName: categoryNameController.text,
+          categoryName: categoryName,
           parentCategory: '0',
           orderNumber: '0',
-          categoryStatus: status,
-          descriptions: descriptionsController.text,
+          categoryStatus: categoryStatus,
+          descriptions: descriptions,
           imageFile: webImage,
           imageFile2: webImage2,
-          seoUrl: seoUrlController.text);
+          seoUrl: seoUrl);
 
       if (response!.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data;
@@ -146,9 +146,7 @@ class AddProductsController extends MyController {
           status = '1';
           webImage = null;
           webImage2 = null;
-          categoryNameController.clear();
-          descriptionsController.clear();
-          seoUrlController.clear();
+
           update();
           return true;
         } else {
@@ -174,9 +172,8 @@ class AddProductsController extends MyController {
     return false;
   }
 
-  Future<bool> editCategory({
-    required int? categoryId,
-  }) async {
+  Future<bool> editCategory(
+      {required int? categoryId, BuildContext? context}) async {
     isLoading = true;
     update();
     try {
@@ -186,10 +183,15 @@ class AddProductsController extends MyController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = json.decode(response.body);
         if (responseData['status'] == 1) {
-          final categoryeditResponse =
-              CategoryEditResponse.fromJson(responseData);
-          categori = categoryeditResponse.data;
-          print('--${jsonEncode(categori)}');
+          categori = CategoryEditResponse.fromJson(responseData).data;
+
+          status = 'Active';
+          update();
+          Navigator.pushNamed(
+              // ignore: use_build_context_synchronously
+              context!,
+              '/apps/ecommerce/add_category',
+              arguments: {'id': categoryId, 'data': categori});
           message = responseData['message'] ?? 'Items viewing failed';
           return true;
         } else {
@@ -216,12 +218,9 @@ class AddProductsController extends MyController {
     required String? categoryStatus,
     required String? seoUrl,
     required String? descriptions,
-    required File? imageFile,
-    required File? logoFile,
-    //required String? status,
+    BuildContext? context,
   }) async {
-    editCategoryLoading = true;
-    // print(editCategoryLoading);
+    isLoading = true;
     update();
 
     try {
@@ -237,23 +236,26 @@ class AddProductsController extends MyController {
       if (response!.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data;
         if (responseData['status'] == 1) {
-          message = responseData['message'] ?? '';
-          editCategoryLoading = false;
+          toastMsg(context!, responseData['message']);
+          var ctrl=Get.put(EcommerceCategoryController());
+          ctrl.fetchCategoryData(page:ctrl.currentPage );
+          isLoading = false;
           update();
           return true;
         } else {
-          message = responseData['message'] ?? 'Failed to create brand';
+          toastMsg(context!, responseData['message']);
           return false;
         }
       } else {
-        message = 'Server error: ${response.statusCode}';
+        toastMsg(context!, 'Server error: ${response.statusCode}');
+
         return false;
       }
     } catch (e) {
       message = 'Error while creating brand: $e';
     }
 
-    editCategoryLoading = false;
+    isLoading = false;
     update();
 
     return false;

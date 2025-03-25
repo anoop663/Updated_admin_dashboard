@@ -173,7 +173,9 @@ class _TopBarState extends State<TopBar>
             padding: MySpacing.xy(8, 8),
             child: MyButton(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onPressed: () => {},
+              onPressed: () => {
+              Navigator.pushNamed(context, '/auth/login')
+              },
               borderRadiusAll: AppStyle.buttonRadius.medium,
               padding: MySpacing.xy(8, 4),
               splashColor: contentTheme.danger.withAlpha(28),
