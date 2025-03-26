@@ -98,7 +98,7 @@ class DashboardPageState extends State<DashboardPage>
                               MyContainer(
                                   color: contentTheme.primary.withAlpha(48),
                                   child: Icon(
-                                    LucideIcons.credit_card,
+                                    LucideIcons.users,
                                     color: contentTheme.primary,
                                     size: 24,
                                   ))
@@ -168,7 +168,7 @@ class DashboardPageState extends State<DashboardPage>
                               MyContainer(
                                   color: contentTheme.secondary.withAlpha(48),
                                   child: Icon(
-                                    LucideIcons.truck,
+                                    LucideIcons.package,
                                     color: contentTheme.secondary,
                                     size: 24,
                                   ))

@@ -53,8 +53,8 @@ class _InvoicePageState extends State<InvoicePage>
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: "Extra Pages"),
-                        MyBreadcrumbItem(name: "Invoice", active: true),
+                        MyBreadcrumbItem(name: "Invoices"),
+                        MyBreadcrumbItem(name: "Invoice details", active: true),
                       ],
                     ),
                   ],

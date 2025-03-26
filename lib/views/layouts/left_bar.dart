@@ -47,7 +47,7 @@ class _LeftBarState extends State<LeftBar>
   final ThemeCustomizer customizer = ThemeCustomizer.instance;
 
   bool isCondensed = false;
-  String path = UrlService.getCurrentUrl();
+ // String path = UrlService.getCurrentUrl();
 
   @override
   void initState() {
@@ -189,31 +189,31 @@ class _LeftBarState extends State<LeftBar>
                   ),
                   if (isCondensed) MySpacing.height(20),
                   if (isCondensed)
-                    InkWell(
-                      onTap: () {
-                        UrlService.goToPagger();
-                      },
-                      child: Padding(
-                          padding: MySpacing.x(16),
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    4), // color: contentTheme.primary.withAlpha(40),
-                                gradient: LinearGradient(
-                                    colors: const [
-                                      Colors.deepPurple,
-                                      Colors.lightBlue
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight)),
-                            child: Icon(
-                              LucideIcons.download,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          )),
-                    ),
+                    //InkWell(
+                    //  onTap: () {
+                    ////    UrlService.goToPagger();
+                    //  },
+                    //  child: Padding(
+                    //      padding: MySpacing.x(16),
+                    //      child: Container(
+                    //        padding: EdgeInsets.all(8),
+                    //        decoration: BoxDecoration(
+                    //            borderRadius: BorderRadius.circular(
+                    //                4), // color: contentTheme.primary.withAlpha(40),
+                    //            gradient: LinearGradient(
+                    //                colors: const [
+                    //                  Colors.deepPurple,
+                    //                  Colors.lightBlue
+                    //                ],
+                    //                begin: Alignment.topLeft,
+                    //                end: Alignment.bottomRight)),
+                    //        child: Icon(
+                    //          LucideIcons.download,
+                    //          color: Colors.white,
+                    //          size: 20,
+                    //        ),
+                    //      )),
+                    //),
                   MySpacing.height(20),
                 ],
               ),
@@ -300,8 +300,8 @@ class _MenuWidgetState extends State<MenuWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var route = UrlService.getCurrentUrl();
-    isActive = widget.children.any((element) => element.route == route);
+  //  var route = UrlService.getCurrentUrl();
+   // isActive = widget.children.any((element) => element.route == route);
     onChangeExpansion(isActive);
     if (hideFn != null) {
       hideFn!();

@@ -1,31 +1,23 @@
 import 'package:flatten/data/api_provider.dart';
 import 'package:flatten/views/apps/ecommerce/add_brand.dart';
-
 import 'package:flatten/views/apps/ecommerce/add_category.dart';
 import 'package:flatten/views/apps/ecommerce/add_product.dart';
 import 'package:flatten/views/apps/ecommerce/brand.dart';
-import 'package:flatten/views/apps/ecommerce/customers.dart';
 import 'package:flatten/views/apps/ecommerce/category.dart';
 import 'package:flatten/views/apps/ecommerce/invoice_list.dart';
 import 'package:flatten/views/apps/ecommerce/invoive_details_page.dart';
 import 'package:flatten/views/apps/ecommerce/product.dart';
-
 import 'package:flatten/views/auth/locked.dart';
 import 'package:flatten/views/auth/login.dart';
-
 import 'package:flatten/views/dashboard.dart';
-
 import 'package:flatten/views/ui/buttons.dart';
 import 'package:flatten/views/ui/cards.dart';
 import 'package:flatten/views/ui/carousels.dart';
 import 'package:flatten/views/ui/dialogs.dart';
-
 import 'package:flatten/views/apps/ecommerce/invoice_page.dart';
-
 import 'package:flatten/views/apps/ecommerce/product_detail.dart';
 import 'package:flatten/views/ui/tabs.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 class AuthMiddleware extends GetMiddleware {
@@ -81,10 +73,6 @@ getPageRoute() {
     GetPage(
         name: '/apps/ecommerce/add_category',
         page: () => AddCategoryPage(),
-        middlewares: [AuthMiddleware()]),
-    GetPage(
-        name: '/apps/ecommerce/customers',
-        page: () => CustomersPage(),
         middlewares: [AuthMiddleware()]),
     GetPage(
         name: '/apps/ecommerce/product-detail',

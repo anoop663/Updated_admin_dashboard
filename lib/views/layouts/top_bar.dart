@@ -114,61 +114,61 @@ class _TopBarState extends State<TopBar>
         children: [
           Padding(
             padding: MySpacing.xy(8, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MyButton(
-                  onPressed: () => {},
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  borderRadiusAll: AppStyle.buttonRadius.medium,
-                  padding: MySpacing.xy(8, 4),
-                  splashColor: colorScheme.onSurface.withAlpha(20),
-                  backgroundColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Icon(
-                        LucideIcons.user,
-                        size: 14,
-                        color: contentTheme.onBackground,
-                      ),
-                      MySpacing.width(8),
-                      MyText.labelMedium(
-                        "My Account",
-                        fontWeight: 600,
-                      )
-                    ],
-                  ),
-                ),
-                MySpacing.height(4),
-                MyButton(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  onPressed: () => {},
-                  borderRadiusAll: AppStyle.buttonRadius.medium,
-                  padding: MySpacing.xy(8, 4),
-                  splashColor: colorScheme.onSurface.withAlpha(20),
-                  backgroundColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Icon(
-                        LucideIcons.settings,
-                        size: 14,
-                        color: contentTheme.onBackground,
-                      ),
-                      MySpacing.width(8),
-                      MyText.labelMedium(
-                        "Settings",
-                        fontWeight: 600,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            //child: Column(
+            //  crossAxisAlignment: CrossAxisAlignment.start,
+            //  children: [
+            //    MyButton(
+            //      onPressed: () => {},
+            //      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //      borderRadiusAll: AppStyle.buttonRadius.medium,
+            //      padding: MySpacing.xy(8, 4),
+            //      splashColor: colorScheme.onSurface.withAlpha(20),
+            //      backgroundColor: Colors.transparent,
+            //      child: Row(
+            //        children: [
+            //          Icon(
+            //            LucideIcons.user,
+            //            size: 14,
+            //            color: contentTheme.onBackground,
+            //          ),
+            //          MySpacing.width(8),
+            //          MyText.labelMedium(
+            //            "My Account",
+            //            fontWeight: 600,
+            //          )
+            //        ],
+            //      ),
+            //    ),
+            //    MySpacing.height(4),
+            //    MyButton(
+            //      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //      onPressed: () => {},
+            //      borderRadiusAll: AppStyle.buttonRadius.medium,
+            //      padding: MySpacing.xy(8, 4),
+            //      splashColor: colorScheme.onSurface.withAlpha(20),
+            //      backgroundColor: Colors.transparent,
+            //      child: Row(
+            //        children: [
+            //          Icon(
+            //            LucideIcons.settings,
+            //            size: 14,
+            //            color: contentTheme.onBackground,
+            //          ),
+            //          MySpacing.width(8),
+            //          MyText.labelMedium(
+            //            "Settings",
+            //            fontWeight: 600,
+            //          )
+            //        ],
+            //      ),
+            //    ),
+            //  ],
+            //),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          //Divider(
+          //  height: 1,
+          //  thickness: 1,
+          //),
           Padding(
             padding: MySpacing.xy(8, 8),
             child: MyButton(

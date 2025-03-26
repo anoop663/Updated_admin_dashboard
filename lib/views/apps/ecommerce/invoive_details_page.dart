@@ -70,8 +70,8 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage>
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: "Extra Pages"),
-                        MyBreadcrumbItem(name: "Invoice", active: true),
+                        MyBreadcrumbItem(name: "Invoices"),
+                        MyBreadcrumbItem(name: "Invoice details", active: true),
                       ],
                     ),
                   ],
@@ -391,12 +391,12 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage>
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       MyText.bodySmall(
-                                        "\$${data.orderTotalAmount}",
+                                        "₹${data.orderTotalAmount}",
                                         fontWeight: 600,
                                       ),
                                       MySpacing.width(12),
                                       MyText.bodySmall(
-                                        "\$${data.orderShippingCharge}",
+                                        "₹${data.orderShippingCharge}",
                                         fontWeight: 600,
                                       ),
                                     ],
@@ -408,7 +408,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   MyText(
-                                    "\$${data.orderNetTotalAmount} USD",
+                                    "₹${data.orderNetTotalAmount}",
                                     fontWeight: 700,
                                     fontSize: 22,
                                   ),
